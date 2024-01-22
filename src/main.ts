@@ -78,6 +78,7 @@ async function createCheck(
     ref: github.context.sha
   })
 
+  console.log(res)
   const check_run_id = res.data.check_runs[0].id
 
   await octokit.rest.checks.update({

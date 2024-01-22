@@ -30224,6 +30224,7 @@ async function createCheck(check_name, title, annotations) {
         ...github.context.repo,
         ref: github.context.sha
     });
+    console.log(res);
     const check_run_id = res.data.check_runs[0].id;
     await octokit.rest.checks.update({
         ...github.context.repo,
