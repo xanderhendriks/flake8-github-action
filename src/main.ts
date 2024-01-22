@@ -103,6 +103,7 @@ export async function run() {
       core.setFailed(`${annotations.length} errors(s) found`)
     }
   } catch (error) {
+    console.log(error)
     if (error instanceof Error) {
       core.setFailed(error.message)
     } else {
