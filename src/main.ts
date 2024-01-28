@@ -67,17 +67,12 @@ function parseFlake8Output(output: string): Annotation[] {
 }
 
 async function createCheck(
+  sha: string,
   check_name: string,
   title: string,
   annotations: Annotation[]
 ) {
   const octokit = github.getOctokit(String(GITHUB_TOKEN))
-  const res1 = await octokit.rest.checks.listForRef({
-    ...github.context.repo,
-    ref: github.context.sha
-  })
-
-  console.log(res1)
 
   const res = await octokit.rest.checks.listForRef({
     check_name,
@@ -106,7 +101,12 @@ export async function run() {
     if (annotations.length > 0) {
       console.log(annotations)
       const checkName = core.getInput('checkName')
-      await createCheck(checkName, 'flake8 failure', annotations)
+
+      // Get the base sha for pull requests
+      const sha =
+        github.context.payload.pull_request?.base.sha || github.context.sha
+
+      await createCheck(sha, checkName, 'flake8 failure', annotations)
       core.setFailed(`${annotations.length} errors(s) found`)
     }
   } catch (error) {
