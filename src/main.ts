@@ -77,7 +77,7 @@ async function createCheck(
   const res = await octokit.rest.checks.listForRef({
     check_name,
     ...github.context.repo,
-    ref: github.context.sha
+    ref: sha
   })
 
   console.log(res)
