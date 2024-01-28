@@ -72,6 +72,13 @@ async function createCheck(
   annotations: Annotation[]
 ) {
   const octokit = github.getOctokit(String(GITHUB_TOKEN))
+  const res1 = await octokit.rest.checks.listForRef({
+    ...github.context.repo,
+    ref: github.context.sha
+  })
+
+  console.log(res1)
+
   const res = await octokit.rest.checks.listForRef({
     check_name,
     ...github.context.repo,
